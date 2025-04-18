@@ -10,25 +10,25 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ReportsController" prefHeight="600" prefWidth="800">
 
     <!-- Pie Chart for Available Vehicles -->
-    <PieChart fx:id="availableVehiclesChart" layoutX="20" layoutY="20" prefHeight="260" prefWidth="350"/>
+    <PieChart fx:id="availableVehiclesChart" layoutX="20" layoutY="20" prefHeight="260" prefWidth="350" title="Vehicle Availability"/>
 
     <!-- Bar Chart for Customer Rental History -->
-    <BarChart fx:id="customerRentalHistoryChart" layoutX="420" layoutY="20" prefHeight="260" prefWidth="350">
+    <BarChart fx:id="customerRentalHistoryChart" layoutX="420" layoutY="20" prefHeight="260" prefWidth="350" title="Customer Rentals">
         <xAxis>
-            <CategoryAxis fx:id="categoryAxis"/>
+            <CategoryAxis fx:id="categoryAxis" label="Customers"/>
         </xAxis>
         <yAxis>
-            <NumberAxis fx:id="numberAxis"/>
+            <NumberAxis fx:id="numberAxis" label="Number of Rentals"/>
         </yAxis>
     </BarChart>
 
     <!-- Line Chart for Revenue -->
-    <LineChart fx:id="revenueChart" layoutX="20" layoutY="310" prefHeight="260" prefWidth="750">
+    <LineChart fx:id="revenueChart" layoutX="20" layoutY="310" prefHeight="260" prefWidth="750" title="Monthly Revenue">
         <xAxis>
-            <CategoryAxis fx:id="revenueCategoryAxis"/>
+            <CategoryAxis fx:id="revenueCategoryAxis" label="Month"/>
         </xAxis>
         <yAxis>
-            <NumberAxis fx:id="revenueNumberAxis"/>
+            <NumberAxis fx:id="revenueNumberAxis" label="Amount (R)"/>
         </yAxis>
     </LineChart>
 

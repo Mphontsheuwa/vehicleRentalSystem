@@ -10,121 +10,150 @@ import database.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ReportsController {
 
-    @FXML
-    private PieChart availableVehiclesChart; // Pie chart to display vehicle availability (available and not available)
-
-    @FXML
-    private BarChart<String, Number> customerRentalHistoryChart; // Bar chart to display customer rental history
-
-    @FXML
-    private LineChart<String, Number> revenueChart; // Line chart to display revenue over time
-
-    @FXML
-    private CategoryAxis categoryAxis; // Category axis for the bar chart (used for customer rentals)
-
-    @FXML
-    private NumberAxis numberAxis; // Number axis for the bar chart (used for customer rentals)
-
-    @FXML
-    private CategoryAxis revenueCategoryAxis; // Category axis for the line chart (used for monthly revenue)
-
-    @FXML
-    private NumberAxis revenueNumberAxis; // Number axis for the line chart (used for monthly revenue)
+    @FXML private PieChart availableVehiclesChart;
+    @FXML private BarChart<String, Number> customerRentalHistoryChart;
+    @FXML private LineChart<String, Number> revenueChart;
+    @FXML private CategoryAxis categoryAxis;
+    @FXML private NumberAxis numberAxis;
+    @FXML private CategoryAxis revenueCategoryAxis;
+    @FXML private NumberAxis revenueNumberAxis;
 
     @FXML
     public void initialize() {
-        System.out.println("Initializing charts..."); // Debugging line to indicate that charts are being initialized
-        loadAvailableVehicles(); // Load available vehicle data into Pie chart
-        loadCustomerRentalHistory(); // Load customer rental history data into Bar chart
-        loadRevenueReport(); // Load revenue data into Line chart
+        System.out.println("Initializing charts...");
+        loadAvailableVehicles();
+        loadCustomerRentalHistory();
+        loadRevenueReport();
+        printPaymentData(); // Debugging method
     }
 
-    // ✅ Now includes both Available and Not Available
     private void loadAvailableVehicles() {
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList(); // List to hold Pie chart data
-        String query = "SELECT availability_status, COUNT(*) AS count FROM vehicles GROUP BY availability_status"; // SQL query to get vehicle availability count
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        String query = "SELECT availability_status, COUNT(*) AS count FROM vehicles GROUP BY availability_status";
 
-        try (Connection conn = DBConnection.getConnection(); // Get database connection
-             PreparedStatement ps = conn.prepareStatement(query); // Prepare the SQL query
-             ResultSet rs = ps.executeQuery()) { // Execute the query and get the result set
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) { // Loop through result set
-                String status = rs.getString("availability_status"); // Get availability status (Available or Not Available)
-                int count = rs.getInt("count"); // Get the count of vehicles for the status
-                System.out.println("Status: " + status + ", Count: " + count); // Debugging line
-                data.add(new PieChart.Data(status + " (" + count + ")", count)); // Add the data to the Pie chart
+            while (rs.next()) {
+                String status = rs.getString("availability_status");
+                int count = rs.getInt("count");
+                System.out.println("Vehicle Status: " + status + ", Count: " + count);
+                data.add(new PieChart.Data(status + " (" + count + ")", count));
             }
 
-            // Update Pie chart with data on the JavaFX Application Thread
             Platform.runLater(() -> {
                 availableVehiclesChart.setTitle("Vehicle Availability");
-                availableVehiclesChart.setData(data); // Set the data for the Pie chart
+                availableVehiclesChart.setData(data);
             });
 
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for any errors
+            System.err.println("Error loading vehicle data:");
+            e.printStackTrace();
         }
     }
 
     private void loadCustomerRentalHistory() {
-        XYChart.Series<String, Number> series = new XYChart.Series<>(); // Create a new series for the Bar chart
-        series.setName("Customer Rentals"); // Set the name of the series
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Customer Rentals");
 
-        String query = "SELECT CONCAT(customer_id, ' - ', COUNT(*)) AS label, COUNT(*) AS total FROM bookings GROUP BY customer_id"; // SQL query to get customer rental history
+        String query = "SELECT c.name, COUNT(b.booking_id) AS total " +
+                "FROM customers c LEFT JOIN bookings b ON c.customer_id = b.customer_id " +
+                "GROUP BY c.customer_id, c.name";
 
-        try (Connection conn = DBConnection.getConnection(); // Get database connection
-             PreparedStatement ps = conn.prepareStatement(query); // Prepare the SQL query
-             ResultSet rs = ps.executeQuery()) { // Execute the query and get the result set
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) { // Loop through result set
-                String label = rs.getString("label"); // Get the customer ID and rental count as label
-                int total = rs.getInt("total"); // Get the total rental count for the customer
-                System.out.println("Label: " + label + ", Total: " + total); // Debugging line
-                series.getData().add(new XYChart.Data<>(label, total)); // Add the data to the Bar chart series
+            while (rs.next()) {
+                String customerName = rs.getString("name");
+                int total = rs.getInt("total");
+                System.out.println("Customer: " + customerName + ", Rentals: " + total);
+                series.getData().add(new XYChart.Data<>(customerName, total));
             }
 
-            // Update Bar chart with data on the JavaFX Application Thread
             Platform.runLater(() -> {
                 customerRentalHistoryChart.setTitle("Customer Rental History");
-                customerRentalHistoryChart.getData().clear(); // Clear existing data
-                customerRentalHistoryChart.getData().add(series); // Add the new data
+                customerRentalHistoryChart.getData().clear();
+                customerRentalHistoryChart.getData().add(series);
+                categoryAxis.setLabel("Customers");
+                numberAxis.setLabel("Number of Rentals");
             });
 
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for any errors
+            System.err.println("Error loading customer rental data:");
+            e.printStackTrace();
         }
     }
 
     private void loadRevenueReport() {
-        XYChart.Series<String, Number> series = new XYChart.Series<>(); // Create a new series for the Line chart
-        series.setName("Monthly Revenue"); // Set the name of the series
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Monthly Revenue");
 
-        String query = "SELECT DATE_FORMAT(rental_start_date, '%b %Y') AS month, SUM(total_amount) AS revenue " +
-                "FROM bookings GROUP BY YEAR(rental_start_date), MONTH(rental_start_date) ORDER BY YEAR(rental_start_date), MONTH(rental_start_date)"; // SQL query to get monthly revenue
+        String query = "SELECT DATE_FORMAT(payment_date, '%b %Y') AS month, " +
+                "SUM(amount) AS revenue " +
+                "FROM payments " +
+                "GROUP BY YEAR(payment_date), MONTH(payment_date) " +
+                "ORDER BY YEAR(payment_date), MONTH(payment_date)";
 
-        try (Connection conn = DBConnection.getConnection(); // Get database connection
-             PreparedStatement ps = conn.prepareStatement(query); // Prepare the SQL query
-             ResultSet rs = ps.executeQuery()) { // Execute the query and get the result set
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) { // Loop through result set
-                String month = rs.getString("month"); // Get the month
-                double revenue = rs.getDouble("revenue"); // Get the total revenue for the month
-                System.out.println("Month: " + month + ", Revenue: " + revenue); // Debugging line
-                series.getData().add(new XYChart.Data<>(month, revenue)); // Add the data to the Line chart series
+            System.out.println("Revenue Data:");
+            while (rs.next()) {
+                String month = rs.getString("month");
+                double revenue = rs.getDouble("revenue");
+                System.out.println("Month: " + month + ", Revenue: " + revenue);
+                series.getData().add(new XYChart.Data<>(month, revenue));
             }
 
-            // Update Line chart with data on the JavaFX Application Thread
             Platform.runLater(() -> {
-                revenueChart.setTitle("Revenue Report");
-                revenueChart.getData().clear(); // Clear existing data
-                revenueChart.getData().add(series); // Add the new data
+                revenueChart.setTitle("Monthly Revenue Report");
+                revenueChart.getData().clear();
+                revenueChart.getData().add(series);
+                revenueCategoryAxis.setLabel("Month");
+                revenueNumberAxis.setLabel("Amount (R)");
             });
 
         } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for any errors
+            System.err.println("Error loading revenue data:");
+            e.printStackTrace();
+        }
+    }
+
+    // Debugging method to verify payment data
+    private void printPaymentData() {
+        String sql = "SELECT p.payment_id, p.booking_id, p.amount, p.payment_method, p.payment_date, " +
+                "c.name AS customer_name, v.brand_model AS vehicle " +
+                "FROM payments p " +
+                "JOIN bookings b ON p.booking_id = b.booking_id " +
+                "JOIN customers c ON b.customer_id = c.customer_id " +
+                "JOIN vehicles v ON b.vehicle_id = v.vehicle_id";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            System.out.println("\nPayment Data Details:");
+            System.out.println("ID | Booking | Amount | Method | Date | Customer | Vehicle");
+            while (rs.next()) {
+                System.out.printf("%d | %d | R%.2f | %s | %s | %s | %s%n",
+                        rs.getInt("payment_id"),
+                        rs.getInt("booking_id"),
+                        rs.getDouble("amount"),
+                        rs.getString("payment_method"),
+                        rs.getDate("payment_date"),
+                        rs.getString("customer_name"),
+                        rs.getString("vehicle"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving payment details:");
+            e.printStackTrace();
         }
     }
 }
