@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.LoginController"
+      prefHeight="500" prefWidth="600"
+      style="-fx-background-color: #fef6f9; -fx-padding: 40; -fx-border-color: #d8b5c3; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+
+   <!-- Title Label: Displays "Welcome to Vehicle Rental" with specific style -->
+   <Label text="Welcome to Vehicle Rental"
+          style="-fx-text-fill: #944e63;">
+      <font>
+         <Font name="Georgia Bold" size="26.0"/>
+      </font>
+   </Label>
+
+   <!-- Login Form Section -->
+   <GridPane hgap="15" vgap="15" alignment="CENTER">
+      <!-- Padding around the grid -->
+      <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+      <!-- Username Label and TextField -->
+      <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+             style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+      <TextField fx:id="usernameField" promptText="Enter your username"
+                 GridPane.rowIndex="0" GridPane.columnIndex="1"
+                 style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+
+      <!-- Password Label and PasswordField -->
+      <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+             style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+      <PasswordField fx:id="passwordField" promptText="Enter your password"
+                     GridPane.rowIndex="1" GridPane.columnIndex="1"
+                     style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+   </GridPane>
+
+   <!-- Buttons for Login and Register -->
+   <HBox spacing="15" alignment="CENTER">
+      <!-- Login Button that triggers the login action -->
+      <Button text="Login" onAction="#login"
+              style="-fx-background-color: #b48e9e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;"
+              prefWidth="120"/>
+
+      <!-- Register Button that triggers the registration action -->
+      <Button text="Register" onAction="#goToRegister"
+              style="-fx-background-color: #f2d5db; -fx-text-fill: #5e4b56; -fx-background-radius: 6;"
+              prefWidth="120"/>
+   </HBox>
+
+   <!-- Message Label to display error or success messages -->
+   <Label fx:id="messageLabel" style="-fx-text-fill: #a94442; -fx-font-size: 13px;"/>
+</VBox>

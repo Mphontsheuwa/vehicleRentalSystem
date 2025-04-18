@@ -1,0 +1,31 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!-- Root layout for the payment screen, using AnchorPane -->
+<AnchorPane fx:controller="controllers.PaymentController"
+            xmlns:fx="http://javafx.com/fxml"
+            prefWidth="600" prefHeight="400">
+    <children>
+        <!-- Input field for entering number of rental days -->
+        <TextField fx:id="rentalDaysField" layoutX="50" layoutY="30" promptText="Rental Days"/>
+
+        <!-- Input field for entering vehicle rental fee -->
+        <TextField fx:id="vehicleFeeField" layoutX="50" layoutY="70" promptText="Vehicle Fee"/>
+
+        <!-- Input field for entering cost of additional services -->
+        <TextField fx:id="additionalServicesField" layoutX="50" layoutY="110" promptText="Additional Services"/>
+
+        <!-- Input field for entering any late fee -->
+        <TextField fx:id="lateFeeField" layoutX="50" layoutY="150" promptText="Late Fee"/>
+
+        <!-- Dropdown (combo box) for selecting payment method -->
+        <ComboBox fx:id="paymentMethodCombo" layoutX="50" layoutY="190" promptText="Payment Method"/>
+
+        <!-- Button to generate invoice based on entered data -->
+        <Button text="Generate Invoice" layoutX="50" layoutY="230" onAction="#generateInvoice"/>
+
+        <!-- Text area to display the generated invoice -->
+        <Text fx:id="invoiceOutput" layoutX="50" layoutY="270" wrappingWidth="500"/>
+    </children>
+</AnchorPane>

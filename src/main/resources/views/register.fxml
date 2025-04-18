@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.RegisterController"
+      prefHeight="500" prefWidth="600"
+      style="-fx-background-color: #fef6f9; -fx-padding: 40; -fx-border-color: #d8b5c3; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+
+    <!-- Title Label for Registration Form -->
+    <Label text="Register Account"
+           style="-fx-text-fill: #944e63;">
+        <font>
+            <Font name="Georgia Bold" size="26.0"/>
+        </font>
+    </Label>
+
+    <!-- GridPane to organize the input fields -->
+    <GridPane hgap="15" vgap="15" alignment="CENTER">
+        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+        <!-- Username Field -->
+        <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+               style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+        <TextField fx:id="usernameField" promptText="Enter your username"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"
+                   style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+
+        <!-- Password Field -->
+        <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+               style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+        <PasswordField fx:id="passwordField" promptText="Enter your password"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+
+        <!-- Confirm Password Field -->
+        <Label text="Confirm Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+               style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirm your password"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+
+        <!-- Role Selection ComboBox -->
+        <Label text="Role:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+               style="-fx-text-fill: #5e4b56; -fx-font-size: 14px;"/>
+        <ComboBox fx:id="roleComboBox" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                  style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #b48e9e;"/>
+
+    </GridPane>
+
+    <!-- Register Button -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Register" onAction="#registerUser"
+                style="-fx-background-color: #b48e9e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;"
+                prefWidth="120"/>
+    </HBox>
+
+    <!-- Message Label (for error/success messages) -->
+    <Label fx:id="messageLabel" style="-fx-text-fill: #a94442; -fx-font-size: 13px;"/>
+</VBox>

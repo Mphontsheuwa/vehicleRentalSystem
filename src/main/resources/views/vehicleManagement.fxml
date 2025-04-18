@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Import necessary JavaFX controls and layouts -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Root layout: AnchorPane, controller linked to VehicleManagementController -->
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.VehicleManagementController">
+
+    <!-- VBox arranges elements vertically with 10px spacing between them -->
+    <VBox spacing="10">
+
+        <!-- Each HBox arranges elements horizontally with 10px spacing -->
+
+        <!-- Vehicle ID field (not editable) -->
+        <HBox spacing="10">
+            <Label text="Vehicle ID:"/>
+            <TextField fx:id="vehicleIdField" editable="false"/>
+        </HBox>
+
+        <!-- Brand/Model input field -->
+        <HBox spacing="10">
+            <Label text="Brand / Model:"/>
+            <TextField fx:id="brandModelField"/>
+        </HBox>
+
+        <!-- Category dropdown menu -->
+        <HBox spacing="10">
+            <Label text="Category:"/>
+            <ComboBox fx:id="categoryField"/>
+        </HBox>
+
+        <!-- Rental price input field -->
+        <HBox spacing="10">
+            <Label text="Rental Price:"/>
+            <TextField fx:id="priceField"/>
+        </HBox>
+
+        <!-- Availability dropdown menu -->
+        <HBox spacing="10">
+            <Label text="Availability:"/>
+            <ComboBox fx:id="availabilityField"/>
+        </HBox>
+
+        <!-- Buttons for Add, Update, Delete, Search, and Clear actions -->
+        <HBox spacing="10">
+            <Button text="Add" onAction="#handleAdd"/>
+            <Button text="Update" onAction="#handleUpdate"/>
+            <Button text="Delete" onAction="#handleDelete"/>
+            <Button text="Search" onAction="#handleSearch"/>
+            <Button text="Clear" onAction="#handleClear"/>
+        </HBox>
+
+        <!-- TableView to display vehicle data -->
+        <TableView fx:id="vehicleTable" prefHeight="400" prefWidth="600">
+
+            <!-- Table columns to show different vehicle attributes -->
+            <columns>
+                <TableColumn fx:id="vehicleIdColumn" text="Vehicle ID"/>
+                <TableColumn fx:id="brandModelColumn" text="Brand / Model"/>
+                <TableColumn fx:id="categoryColumn" text="Category"/>
+                <TableColumn fx:id="rentalPriceColumn" text="Rental Price"/>
+                <TableColumn fx:id="availabilityColumn" text="Availability"/>
+            </columns>
+        </TableView>
+
+    </VBox>
+</AnchorPane>

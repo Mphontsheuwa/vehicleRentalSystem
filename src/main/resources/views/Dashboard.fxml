@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="controllers.DashboardController">
+
+    <!-- Top Section: Contains the Welcome Label -->
+    <top>
+        <HBox spacing="20" style="-fx-background-color: gray;">
+            <!-- Padding for spacing inside the top section -->
+            <padding>
+                <Insets bottom="10" left="20" right="20" top="10" />
+            </padding>
+            <!-- Welcome Label with text "Welcome, Admin" -->
+            <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="Welcome, Admin" />
+        </HBox>
+    </top>
+
+    <!-- Left Section: Contains the Sidebar Navigation with Buttons -->
+    <left>
+        <VBox spacing="15" style="-fx-background-color: black; -fx-pref-width: 200px; -fx-border-radius: 10px;">
+            <!-- Padding for spacing inside the left section -->
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="20" />
+            </padding>
+            <!-- Sidebar buttons for different sections of the application -->
+            <Button fx:id="dashboardButton" onAction="#handleDashboard" text="Dashboard" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <Button fx:id="manageVehiclesButton" onAction="#handleVehicleManagement" text="Vehicle Management" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <Button fx:id="manageCustomersButton" onAction="#handleCustomerManagement" text="Customer Management" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <Button fx:id="bookingsButton" onAction="#handleBookings" text="Bookings" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <Button fx:id="paymentsButton" onAction="#handlePayments" text="Payments" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <Button fx:id="viewReportsButton" onAction="#handleReports" text="Reports" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;" />
+            <!-- Logout Button -->
+            <Button fx:id="logoutButton" text="Logout" onAction="#logout"
+                    style="-fx-background-color: #b37c9d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;"
+                    prefWidth="120" />
+            <!-- Export Reports Button -->
+            <Button fx:id="exportReportsButton" text="Export Reports" onAction="#handleExportReports"/>
+        </VBox>
+    </left>
+
+    <!-- Center Section: Placeholder for main content -->
+    <center>
+        <StackPane fx:id="mainContent" style="-fx-background-color: pink; -fx-border-radius: 10px; -fx-padding: 20;">
+            <!-- Padding for spacing inside the center section -->
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <!-- Placeholder label inside center section -->
+            <Label style="-fx-background-color: pink; -fx-font-size: 16px; -fx-text-fill: #34495E;" text="Select a section from the menu." />
+        </StackPane>
+    </center>
+</BorderPane>

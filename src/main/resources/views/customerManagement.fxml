@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Import required JavaFX classes -->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- VBox is the root layout; spacing adds space between its children -->
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.CustomerManagementController"
+      spacing="10">
+
+    <!-- Padding around the VBox content -->
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
+
+    <!-- Title label with bold, larger font -->
+    <Label text="Customer Management" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- GridPane layout for form inputs -->
+    <GridPane hgap="10" vgap="10">
+        <!-- Customer ID row -->
+        <Label text="Customer ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="customerIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- Name row -->
+        <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="nameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Contact row -->
+        <Label text="Contact:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="contactField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- License number row -->
+        <Label text="License No:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="licenseNumberField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- Rental history row -->
+        <Label text="Rental History:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="rentalHistoryField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <!-- Buttons row in HBox for horizontal layout -->
+        <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <!-- Register button -->
+            <Button text="Register" onAction="#handleRegister"/>
+            <!-- Update button -->
+            <Button text="Update" onAction="#handleUpdate"/>
+            <!-- Delete button -->
+            <Button text="Delete" onAction="#handleDelete"/>
+            <!-- Search button -->
+            <Button text="Search" onAction="#handleSearch"/>
+        </HBox>
+    </GridPane>
+
+    <!-- TableView for displaying customer data -->
+    <TableView fx:id="customerTable" prefHeight="200">
+        <columns>
+            <!-- Table columns for customer info -->
+            <TableColumn fx:id="customerIdColumn" text="ID"/>
+            <TableColumn fx:id="nameColumn" text="Name"/>
+            <TableColumn fx:id="contactColumn" text="Contact"/>
+            <TableColumn fx:id="licenseColumn" text="License No"/>
+            <TableColumn fx:id="rentalHistoryColumn" text="Rental History"/>
+        </columns>
+    </TableView>
+
+</VBox>
